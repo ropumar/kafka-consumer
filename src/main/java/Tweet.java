@@ -38,4 +38,8 @@ public class Tweet {
         this.date = date;
     }
 
+    public String toString() {
+        return this.message;
+    }
+
 }

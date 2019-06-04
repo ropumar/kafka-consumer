@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class TweetCollectorApplication {
-    private static final Logger logger = Logger.getLogger(TweetCollectorApplication.class.getName());
+public class TweetConsumerApplication {
+    private static final Logger logger = Logger.getLogger(TweetConsumerApplication.class.getName());
 
     private static void start() throws IOException {
         // O hostname está na variável de ambiente HOSTNAME ou assume localhost
@@ -20,7 +20,7 @@ public class TweetCollectorApplication {
 
         // Inicia o servidor HTTP
         URI baseUri = UriBuilder.fromUri("http://" + hostname + "/").port(Integer.parseInt(port)).build();
-        ResourceConfig config = new ResourceConfig(TweetCollectorResource.class);
+        ResourceConfig config = new ResourceConfig(TweetConsumerResource.class);
         config.register(new InjectionBinder());
         HttpServer server = GrizzlyHttpServerFactory.createHttpServer(baseUri, config);
         logger.log(Level.INFO, "Aplicação está disponível em {0}", baseUri.toString());

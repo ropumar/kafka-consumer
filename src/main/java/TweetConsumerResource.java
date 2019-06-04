@@ -7,10 +7,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Path("tweets/collector")
-public class TweetCollectorResource {
+public class TweetConsumerResource {
      @Inject
      LifecycleManager manager;
-    private static final Logger logger = Logger.getLogger(TweetCollectorResource.class.getName());
+    private static final Logger logger = Logger.getLogger(TweetConsumerResource.class.getName());
 
     /**
      * Inicia o serviço de Coleta de Tweets

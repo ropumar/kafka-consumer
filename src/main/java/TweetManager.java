@@ -14,8 +14,11 @@ import java.util.Collections;
 import java.util.Properties;
 
 public class TweetManager implements LifecycleManager, Serializable {
+
+    private boolean isRunning = true;
     @Override
     public void start() {
+        isRunning = true;
         // Criar as propriedades do consumidor
         Properties properties = new Properties();
         properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -30,17 +33,22 @@ public class TweetManager implements LifecycleManager, Serializable {
         // Subscrever o consumidor para o nosso(s) tópico(s)
         consumer.subscribe(Collections.singleton("meu_topico"));
 
-        // Ler as mensagens
-        while (true) {  // Apenas como demo, usaremos um loop infinito
-            ConsumerRecords<String, Tweet> poll = consumer.poll(Duration.ofMillis(1000));
-            for (ConsumerRecord record : poll) {
-                System.out.println(record.topic() + " - " + record.partition() + " - " + record.value());
+        Thread myConsumer = new Thread (new Runnable(){
+            public void run(){
+                // Ler as mensagens
+                while (isRunning) {  // Apenas como demo, usaremos um loop infinito
+                    ConsumerRecords<String, Tweet> poll = consumer.poll(Duration.ofMillis(1000));
+                    for (ConsumerRecord<String, Tweet> record : poll) {
+                        System.out.println(record.topic() + " - " + record.partition() + " - " + record.value());
+                    }
+                }
             }
-        }
+        });
+        myConsumer.start();
     }
 
     @Override
     public void stop() {
-
+        isRunning = false;
     }
 }
